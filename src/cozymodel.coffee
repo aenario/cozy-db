@@ -43,7 +43,9 @@ cozyDataAdapter =
             if error
                 callback error
             else if response.statusCode is 404
-                callback null, null
+                error = new Error "Not Found : #{id}"
+                error.status = 404
+                callback error
             else
                 callback null, body
 

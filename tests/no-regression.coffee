@@ -88,11 +88,10 @@ describe "Find", ->
 
         it "When I claim note with id 123", (done) ->
             Note.find 123, (err, note) =>
-                @note = note
+                should.exist err
+                should.not.exist note
+                err.status.should.equal 404
                 done()
-
-        it "Then null should be returned", ->
-            should.not.exist @note
 
     describe "Find a note that does exist in database", ->
 

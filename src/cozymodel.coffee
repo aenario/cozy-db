@@ -67,17 +67,6 @@ cozyDataAdapter =
                 body.id = body._id
                 callback null, body
 
-    save: (id, data, callback) ->
-        client.put "data/#{id}/", data, (error, response, body) ->
-            if error
-                callback error
-            else if response.statusCode is 404
-                callback new Error "Document #{id} not found"
-            else if response.statusCode isnt 200
-                callback new Error "Server error occured."
-            else
-                callback null, body
-
     updateAttributes: (id, data, callback) ->
         client.put "data/merge/#{id}/", data, (error, response, body) ->
             if error

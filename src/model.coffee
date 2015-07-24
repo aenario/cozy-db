@@ -68,16 +68,6 @@ class Model
             data[k] = v for k,v of attributes
             callback null, new (this)(data)
 
-    # Public: save (create or update) a model whole state (PUT)
-    #
-    # id - {String}, id of the model to update
-    # data - Object, new attributes for the model
-    # callback - Function({Error} err, {Model} updated)
-    #
-    # Returns null
-    @save: (id, data, callback) ->
-        @adapter.save id, data, (err, attributes) =>
-            callback null, new this(attributes)
 
     # Public: change some attributes of the model (PATCH)
     #
@@ -351,20 +341,6 @@ class Model
         @constructor.cast attributes, this
         @id ?= attributes._id if attributes._id
 
-    # Public: [DEPRECATED] save
-    #
-    # update or create a model
-    #
-    # callback - Function({Error} err, {Model} updated)
-    #
-    # Returns null
-    save: (callback) ->
-        cb = _wrapCallback @, {}, callback
-        if @id
-            @constructor.adapter.save
-            .call @constructor, @id, @getAttributes(), cb
-        else
-            @constructor.adapter.create.call @constructor, @getAttributes(), cb
 
     # Public: updateAttributes
     #

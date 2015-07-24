@@ -47,27 +47,6 @@ pouchdbDataAdapter =
             else
                 callback null, {id: response.id}
 
-    save: (id, attributes, callback) ->
-        attributes.docType = @getDocType()
-        PouchdbBackedModel.db.get id, (err, doc) =>
-            if err
-                callback err
-            else if not doc?
-                callback new Error 'document does not exist'
-            else if doc.docType.toLowerCase() isnt @getDocType().toLowerCase()
-                callback new Error 'document does not exist'
-            else
-                attributes._id = attributes.id
-                attributes._rev = doc._rev
-                PouchdbBackedModel.db.put attributes, (err, response) ->
-                    if err
-                        callback err
-                    if not response.ok
-                        callback new Error """
-                            An error occured while saving document.'
-                        """
-                    else
-                        callback null, attributes
 
     updateAttributes: (id, attributes, callback) ->
         docType = @getDocType()

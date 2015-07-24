@@ -18,6 +18,16 @@ errorMaker = (error, response, body, expectedCode) ->
     else
         return null
 
+ensureID = (id, callback) ->
+    unless id
+        err = new Error('id is undefined')
+        err.status = 400
+        callback err
+        return false
+    else
+        return true
+
+
 # monkeypath
 FormData = require 'request-json-light/node_modules/form-data'
 _old = FormData::pipe
@@ -30,6 +40,7 @@ FormData::pipe = (request) ->
 cozyDataAdapter =
 
     exists: (id, callback) ->
+        return unless ensureID id, callback
         client.get "data/exist/#{id}/", (error, response, body) ->
             if error
                 callback error
@@ -39,6 +50,7 @@ cozyDataAdapter =
                 callback null, body.exist
 
     find: (id, callback) ->
+        return unless ensureID id, callback
         client.get "data/#{id}/", (error, response, body) ->
             if error
                 callback error
@@ -68,6 +80,7 @@ cozyDataAdapter =
                 callback null, body
 
     updateAttributes: (id, data, callback) ->
+        return unless ensureID id, callback
         client.put "data/merge/#{id}/", data, (error, response, body) ->
             if error
                 callback error
@@ -79,6 +92,7 @@ cozyDataAdapter =
                 callback null, body
 
     destroy: (id, callback) ->
+        return unless ensureID id, callback
         client.del "data/#{id}/", (error, response, body) ->
             if error
                 callback error
